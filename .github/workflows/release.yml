@@ -67,14 +67,14 @@ jobs:
           cd target/${{ matrix.target }}/release
           
           # Find the first first executable binary
-          VERSION=${GITHUB_REF_NAME}
-          BIN_PATH=$(ls -1 | grep "${VERSION}" | head -n 1)
+          BIN_PATH=$(find . -maxdepth 1 -type f -perm -111 | head -n 1)
           if [[ -z "$BIN_PATH" ]]; then
             echo "❌ No executable found in release directory."
             exit 1
           fi
 
           BIN_NAME=$(basename "$BIN_PATH")
+          VERSION=${GITHUB_REF_NAME}
           ARCHIVE_NAME="${BIN_NAME}-${VERSION}-${{ matrix.target }}.tar.gz"
 
           tar czf "${ARCHIVE_NAME}" "$BIN_NAME"
