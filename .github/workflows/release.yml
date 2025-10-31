@@ -67,7 +67,7 @@ jobs:
           cd target/${{ matrix.target }}/release
           
           # Find the first first executable binary
-          BIN_PATH=$(find . -maxdepth 1 -type f -executable | head -n 1)
+          BIN_PATH=$(find . -maxdepth 1 -type f -111 | head -n 1)
           if [[ -z "$BIN_PATH" ]]; then
             echo "❌ No executable found in release directory."
             exit 1
