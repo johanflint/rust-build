@@ -36,6 +36,13 @@ jobs:
       - name: Tests
         if: ${{ matrix.target == 'x86_64-unknown-linux-gnu' || matrix.target == 'x86_64-apple-darwin' }}
         run: cargo test --verbose
+      - name: Install ARMv7 cross compiler
+        if: matrix.target == 'armv7-unknown-linux-gnueabihf'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-linux-gnueabihf
+          echo '[target.armv7-unknown-linux-gnueabihf]' >> ~/.cargo/config.toml
+          echo 'linker = "arm-linux-gnueabihf-gcc"' >> ~/.cargo/config.toml
       - name: Build
         run: cargo build --release --target ${{ matrix.target }} --verbose
       - name: Tests
