@@ -43,13 +43,28 @@ jobs:
       - name: Package binary and checksum
         shell: bash
         run: |
+          set -euo pipefail
           cd target/${{ matrix.target }}/release
-          BIN_NAME=$(basename $(find . -maxdepth 1 -type f -perm +111 | head -n 1))
+          
+          # Find the first first executable binary
+          BIN_PATH=$(find . -maxdepth 1 -type f -executable | head -n 1)
+          if [[ -z "$BIN_PATH" ]]; then
+            echo "❌ No executable found in release directory."
+            exit 1
+          fi
+
+          BIN_NAME=$(basename "$BIN_PATH")
           VERSION=${GITHUB_REF_NAME}
           ARCHIVE_NAME="${BIN_NAME}-${VERSION}-${{ matrix.target }}.tar.gz"
 
           tar czf "${ARCHIVE_NAME}" "$BIN_NAME"
-          shasum -a 256 "${ARCHIVE_NAME}" > "${ARCHIVE_NAME}.sha256"
+          
+          # Create checksum file
+          if command -v sha256sum >/dev/null 2>&1; then
+            sha256sum "$ARCHIVE_NAME" > "${ARCHIVE_NAME}.sha256"
+          else
+            shasum -a 256 "$ARCHIVE_NAME" > "${ARCHIVE_NAME}.sha256"
+          fi
 
           echo "ASSET_PATH=${PWD}/${ARCHIVE_NAME}" >> $GITHUB_ENV
           echo "CHECKSUM_PATH=${PWD}/${ARCHIVE_NAME}.sha256" >> $GITHUB_ENV
