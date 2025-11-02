@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import json
+import os
 
 # --- helper to run shell commands ---
 def run(cmd):
@@ -46,4 +47,5 @@ next_version = f"{major}.{minor}.{patch}"
 print(f"Next version: {next_version}")
 
 # --- 5. Write output for GitHub Actions ---
-print(f"::set-output name=next-version::{next_version}")
+with open(os.environ["$GITHUB_OUTPUT"], "a") as fh:
+    fh.write("next-version={next_version}\n")
