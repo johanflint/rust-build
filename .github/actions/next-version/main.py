@@ -49,5 +49,5 @@ next_version = f"{major}.{minor}.{patch}"
 print(f"Next version: {next_version}")
 
 # --- 5. Write output for GitHub Actions ---
-with open(os.environ["$GITHUB_OUTPUT"], "a") as fh:
+with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
     fh.write("next-version={next_version}\n")
