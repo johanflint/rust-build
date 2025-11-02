@@ -20,11 +20,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-#      - name: Setup python
-#        uses: actions/setup-python@v5
-#        with:
-#          python-version: 3.13
+        with:
+          fetch-depth: 0 # fetch full history
+          fetch-tags: true
 
       - name: Next version
         id: next-version
