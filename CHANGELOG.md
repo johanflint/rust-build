@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.0 (2026-01-17)
+
+### Features
+
+- Update the message ([#8](https://github.com/johanflint/rust-build/pull/8))
+
 ## v0.2.0 (2025-11-26)
 
 ### Features
